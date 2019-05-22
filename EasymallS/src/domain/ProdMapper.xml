@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.ProdDao">
+	<!-- public Category queryCid(String cname); public boolean addCategory(String 
+		cname); public boolean addProd(Prod prod); public List<Prod> listProd(); 
+		public int countOfCid(int cid); public boolean delCategory(int cid); public 
+		boolean delProd(int id);
+		public boolean updataProd(Prod prod);
+		public boolean addCart(Cart cart);
+		public Prod getProdById(int id);
+		public List<Cart> listCart(int uid);
+		-->
+	<!-- List<Prod> getProdsByKW(String keyword); -->
+	<select id="getProdsByKW" resultType="domain.Prod">
+		select * from prod where name like #{keyword};
+	</select>
+	
+	<select id="listCart" resultType="domain.Cart">
+		select * from cart where uid=#{uid}
+	</select>
+	<select id="getProdById" resultType="domain.Prod">
+		select * from prod where id=#{id};
+	</select>
+	<insert id="addCart">
+		insert into cart values(null,#{uid},#{pid},#{pname},#{imgurl},1);
+	</insert>
+		
+	<update id="updataProd">
+		update prod set pnum=#{pnum} where id=#{id}
+	</update>
+		
+	<select id="countOfCid" flushCache="true" resultType="java.lang.Integer">
+		select count(*) from prod where cid=#{cid}
+	</select>
+
+	<delete id="delCategory">
+		delete from prod_category where id=#{cid}
+	</delete>
+
+	<delete id="delProd">
+		delete from prod where id=#{id}
+	</delete>
+	
+	<!-- public List<Prod> kindProd(String cname); -->
+	
+	<select id="kindProd" resultType="domain.Prod">
+		<!-- select
+		prod.*,prod_category.cname
+		from prod left join prod_category
+		on prod.cid=
+		(select id from prod_category where cname=#{cname})  -->
+		select * from prod 
+		where cid= 
+		(select id from prod_category where cname=#{cname}) 
+	</select>
+
+	<select id="listProd" resultType="domain.Prod">
+		select
+		prod.*,prod_category.cname
+		from prod left join prod_category
+		on prod.cid=prod_category.id
+	</select>
+
+	<select id="queryCid" resultType="domain.Category">
+		select * from prod_category
+		where cname=#{cname}
+	</select>
+
+	<insert id="addCategory">
+		insert into prod_category values(null,#{cname})
+	</insert>
+
+	<insert id="addProd">
+		insert into prod
+		values(null,#{name},#{price},#{cid},#{pnum},#{imgurl},#{description})
+	</insert>
+
+</mapper>

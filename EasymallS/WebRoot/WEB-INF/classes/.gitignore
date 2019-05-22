@@ -1,0 +1,12 @@
+/applicationContext.xml
+/dao/
+/domain/
+/filter/
+/listener/
+/log4j.properties
+/service/
+/springmvc-servlet.xml
+/sqlMapConfig.xml
+/uconfig.properties
+/util/
+/web/
